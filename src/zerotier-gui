@@ -40,7 +40,7 @@ class MainWindow:
                 self.window = tk.Tk(className='zerotier-gui')
                 self.window.title("ZeroTier")
                 self.window.resizable(width = False, height = False)
-
+                
                 # colors
                 self.background = "#d9d9d9"
                 self.foreground = "black"
@@ -933,4 +933,7 @@ if __name__ == "__main__":
 
     # create mainwindow class and execute the mainloop
     mainWindow = MainWindow().window
+    mainWindow.tk.call("source", "azure.tcl")
+    mainWindow.tk.call("set_theme", "dark")
+    
     mainWindow.mainloop()

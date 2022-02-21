@@ -46,6 +46,8 @@ class MainWindow:
                 self.foreground = "black"
                 self.buttonBackground = "#ffb253"
                 self.buttonActiveBackground = "#ffbf71"
+                self.window.tk.call("source", "azure.tcl")
+                MainWindow.sync_theme(self.window)
 
                 # layout setup
                 self.topFrame = tk.Frame(self.window, padx = 20, pady = 10, bg=self.background)
@@ -278,10 +280,21 @@ class MainWindow:
         def get_peers_info(self):
                 return json.loads(check_output(['zerotier-cli', '-j', 'peers']))
 
+        def sync_theme(window):
+                themeStr = window.tk.call("ttk::style", "theme", "use")
+                if themeStr not in ["azure-dark", "azure-light"]:
+                        window.tk.call("set_theme", "dark")
+                return window
+
         def launch_sub_window(self, title):
                 subWindow = tk.Toplevel(self.window, class_='zerotier-gui')
+                
                 subWindow.title(title)
                 subWindow.resizable(width = False, height = False)
+                
+                # subWindow.tk.call("source", "azure.tcl")
+                MainWindow.sync_theme(subWindow)
+                MainWindow.sync_theme(self.window)
 
                 return subWindow
 
@@ -410,29 +423,30 @@ class MainWindow:
                 status = self.get_status()
 
                 # frames
-                topFrame = tk.Frame(statusWindow, padx=20, pady=30, bg=self.background)
-                middleFrame = tk.Frame(statusWindow, padx=20, pady=10, bg=self.background)
-                bottomTopFrame = tk.Frame(statusWindow, padx=20, pady=10, bg=self.background)
-                bottomFrame = tk.Frame(statusWindow, padx=20, pady=10, bg=self.background)
+                topFrame = ttk.Frame(statusWindow, padx=20, pady=30)# padx=20, pady=30, bg=self.background)
+                middleFrame = ttk.Frame(statusWindow, padx=20, pady=10)# padx=20, pady=10, bg=self.background)
+                bottomTopFrame = ttk.Frame(statusWindow, padx=20, pady=10)# padx=20, pady=10, bg=self.background)
+                bottomFrame = ttk.Frame(statusWindow, padx=20, pady=10)# padx=20, pady=10, bg=self.background)
 
                 # widgets
-                titleLabel = tk.Label(topFrame, text="ZeroTier GUI", font=70,
-                        bg=self.background, fg=self.foreground)
+                titleLabel = ttk.Label(topFrame, text="ZeroTier GUI", font=70,
+                        #bg=self.background, fg=self.foreground
+                )
 
                 ztAddrLabel = self.selectable_text(middleFrame, font="Monospace",
                         text="{:25s}{}".format("My ZeroTier Address:", status[2])
                 )
-                versionLabel = tk.Label(middleFrame, font="Monospace",
+                versionLabel = ttk.Label(middleFrame, font="Monospace",
                         text="{:25s}{}".format("ZeroTier Version:", status[3]),
-                        bg=self.background, fg=self.foreground
+                        #bg=self.background, fg=self.foreground
                 )
-                ztGuiVersionLabel = tk.Label(middleFrame, font="Monospace",
+                ztGuiVersionLabel = ttk.Label(middleFrame, font="Monospace",
                         text="{:25s}{}".format("ZeroTier GUI Version:", "1.3.0"),
-                        bg=self.background, fg=self.foreground
+                        #bg=self.background, fg=self.foreground
                 )
-                statusLabel = tk.Label(middleFrame, font="Monospace",
-                        text="{:25s}{}".format("Status:", status[4]),
-                        bg=self.background, fg=self.foreground
+                statusLabel = ttk.Label(middleFrame, font="Monospace",
+                        text="{:25s}{}".format("Status:", status[4])
+                        #,                        bg=self.background, fg=self.foreground
                 )
 
                 closeButton = self.formatted_buttons(bottomTopFrame, text="Close", bg=self.buttonBackground, activebackground=self.buttonActiveBackground,
@@ -933,7 +947,8 @@ if __name__ == "__main__":
 
     # create mainwindow class and execute the mainloop
     mainWindow = MainWindow().window
-    mainWindow.tk.call("source", "azure.tcl")
-    mainWindow.tk.call("set_theme", "dark")
+#     mainWindow.tk.call("source", "azure.tcl")
+#     MainWindow.sync_theme(mainWindow)
+#     mainWindow.tk.call("set_theme", "dark")
     
     mainWindow.mainloop()

@@ -18,9 +18,9 @@ mkdir -pv packaging/usr/bin
 
 cp -vf LICENSE packaging/usr/share/licenses/ZeroTier-GUI
 cp -vf img/zerotier-gui.png packaging/usr/share/pixmaps
-cp -vf zerotier-gui.desktop packaging/usr/share/applications
+cp -vf assets/zerotier-gui.desktop packaging/usr/share/applications
 cp -vf README.md packaging/usr/share/doc/ZeroTier-GUI
-cp -vf src/zerotier-gui packaging/usr/bin
+cp -vf src/zerotier-gui.py packaging/usr/bin/zerotier-gui
 
 
 # Create control file
